@@ -54,7 +54,6 @@ def get_similar_players(good_player_id, club_id, country_id, birth_year):
 
     js = get_results(endpoint_url, query_1)
     L_1 = js['results']['bindings']
-    print('L_1')
     
     
     #similar club and country
@@ -70,8 +69,7 @@ def get_similar_players(good_player_id, club_id, country_id, birth_year):
     
     js = get_results(endpoint_url, query_2)
     L_2 = js['results']['bindings']
-    print('L_2')
-    
+
     
     
     # similar country and birth date
@@ -88,7 +86,6 @@ def get_similar_players(good_player_id, club_id, country_id, birth_year):
     
     js = get_results(endpoint_url, query_3)
     L_3 = js['results']['bindings']
-    print('L_3')
     
     
     J1 = random.choice(L_1)
