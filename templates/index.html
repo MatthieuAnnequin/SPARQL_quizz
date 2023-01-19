@@ -1,0 +1,147 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css')}}">
+
+<body onload="loadquestion()"">
+    <main>
+
+
+        <div class="game-quiz-container">
+          
+            <div class="game-question-container">
+                <h1 id="display-question"></h1>
+            </div>
+
+            <div class="game-options-container">
+              
+               <div class="modal-container" id="option-modal">
+                 
+                    <div class="modal-content-container">
+                         <h1>Please Pick An Option</h1>
+                      
+                         <div class="modal-button-container">
+                            <button onclick="closeOptionModal()">Continue</button>
+                        </div>
+                      
+                    </div>
+                 
+               </div>
+              
+                <span>
+                    <input type="radio" id="option-one" name="option" class="radio" value="optionA" />
+                    <label for="option-one" class="option" id="option-one-label"></label>
+                </span>
+              
+
+                <span>
+                    <input type="radio" id="option-two" name="option" class="radio" value="optionB" />
+                    <label for="option-two" class="option" id="option-two-label"></label>
+                </span>
+              
+
+                <span>
+                    <input type="radio" id="option-three" name="option" class="radio" value="optionC" />
+                    <label for="option-three" class="option" id="option-three-label"></label>
+                </span>
+              
+
+                <span>
+                    <input type="radio" id="option-four" name="option" class="radio" value="optionD" />
+                    <label for="option-four" class="option" id="option-four-label"></label>
+                </span>
+
+
+            </div>
+
+            <div class="next-button-container">
+                <button onclick="Validate()">Valider</button>
+            </div>
+            
+            <div class="answer-container" id="answer"></div>
+            
+            <div id="playagain" hidden=true>
+                <button onclick="PlayAgain()" >Play Again</button>
+            </div>
+
+        </div>
+    </main>
+    <script src="index.js"></script>
+</body>
+
+
+
+
+
+<script>
+
+currentQuestion =     {
+        question: "{{currentQuestion['question']}}",
+        optionA: "{{currentQuestion['optionA']}}",
+        optionB: "{{currentQuestion['optionB']}}",
+        optionC: "{{currentQuestion['optionC']}}",
+        optionD: "{{currentQuestion['optionD']}}",
+        correctOption: "{{currentQuestion['correctOption']}}"
+    }
+    
+
+
+
+
+
+function loadquestion() {
+    document.getElementById("display-question").innerHTML = currentQuestion.question;
+    document.getElementById("option-one-label").innerHTML = currentQuestion.optionA;
+    document.getElementById("option-two-label").innerHTML = currentQuestion.optionB;
+    document.getElementById("option-three-label").innerHTML = currentQuestion.optionC;
+    document.getElementById("option-four-label").innerHTML = currentQuestion.optionD;
+    }
+    
+    
+function Validate() {
+    const currentQuestionAnswer = currentQuestion.correctOption; 
+    console.log(currentQuestionAnswer)
+    const options = document.getElementsByName("option");
+    
+    success = false;
+    options.forEach((option) => {
+        if (option.value === currentQuestionAnswer) {
+            correctOption = option.id;
+            console.log(correctOption);
+            if (option.checked == true) {
+                success = true;
+                }
+            
+        } 
+    })
+    console.log(success);
+    if (success==true) {
+        document.getElementById("answer").innerHTML = "Congratulation ! This is the good answer !"
+        document.getElementById("answer").style.backgroundColor = "green";
+    } else {
+        document.getElementById("answer").innerHTML = "You loose ! The correct answer was "+ currentQuestion[currentQuestion.correctOption]
+        document.getElementById("answer").style.backgroundColor = "red";
+    }
+    document.getElementById("playagain").hidden = false;
+}
+
+
+function PlayAgain() {
+    window.location.href = window.location.href
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

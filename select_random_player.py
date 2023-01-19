@@ -82,3 +82,12 @@ def get_player_id():
     random_player_country = random_player['pays_de_citoyennetéLabel']['value']
     random_player_country_id = random_player['pays_de_citoyenneté']['value'].split("/")[-1]
   return random_player_id, random_player_name, random_player_birth, random_player_country, random_player_country_id, random_club_id, random_club_name
+
+
+
+
+
+
+
+
+
