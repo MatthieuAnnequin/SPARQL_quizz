@@ -108,7 +108,7 @@ def get_similar_players(good_player_id, club_id, country_id, birth_year):
     try:
         J3 = random.choice(L_3)
     except:
-        J2 =  {'item': {'type': 'uri', 'value': 'http://www.wikidata.org/entity/Q142794'},
+        J3 =  {'item': {'type': 'uri', 'value': 'http://www.wikidata.org/entity/Q142794'},
           'itemLabel': {'xml:lang': 'en',
            'type': 'literal',
            'value': "Neymar"}}
