@@ -42,6 +42,7 @@ def get_similar_players(good_player_id, club_id, country_id, birth_year):
     
     # similar birth date and club
     query_1 = f'''SELECT DISTINCT ?item ?itemLabel WHERE {{
+      ?item wdt:P21 wd:Q6581097.
       ?item wdt:P106 wd:Q937857.
       ?item wdt:P569 ?date FILTER (?date > "{start_year}-01-01T00:00:00Z"^^xsd:dateTime) .
       ?item wdt:P569 ?date FILTER (?date < "{end_year}-01-01T00:00:00Z"^^xsd:dateTime) .
@@ -58,6 +59,7 @@ def get_similar_players(good_player_id, club_id, country_id, birth_year):
     
     #similar club and country
     query_2 = f'''SELECT DISTINCT ?item ?itemLabel WHERE {{
+      ?item wdt:P21 wd:Q6581097.
       ?item wdt:P106 wd:Q937857.
       ?item wdt:P54 wd:{club_id} .
       ?item wdt:P1532 wd:{country_id} .
@@ -74,6 +76,7 @@ def get_similar_players(good_player_id, club_id, country_id, birth_year):
     
     # similar country and birth date
     query_3 = f'''SELECT DISTINCT ?item ?itemLabel WHERE {{
+      ?item wdt:P21 wd:Q6581097.
       ?item wdt:P106 wd:Q937857.
       ?item wdt:P569 ?date FILTER (?date > "{start_year}-01-01T00:00:00Z"^^xsd:dateTime) .
       ?item wdt:P569 ?date FILTER (?date < "{end_year}-01-01T00:00:00Z"^^xsd:dateTime) .
@@ -88,9 +91,27 @@ def get_similar_players(good_player_id, club_id, country_id, birth_year):
     L_3 = js['results']['bindings']
     
     
-    J1 = random.choice(L_1)
-    J2 = random.choice(L_2)
-    J3 = random.choice(L_3)
+    try:
+        J1 = random.choice(L_1)
+    except:
+        J1 =  {'item': {'type': 'uri', 'value': 'http://www.wikidata.org/entity/Q1835'},
+          'itemLabel': {'xml:lang': 'en',
+           'type': 'literal',
+           'value': "Zinedine Zidane"}}
+    try:
+        J2 = random.choice(L_2)
+    except:
+        J2 =  {'item': {'type': 'uri', 'value': 'http://www.wikidata.org/entity/Q615'},
+          'itemLabel': {'xml:lang': 'en',
+           'type': 'literal',
+           'value': "Lionel Messi"}}
+    try:
+        J3 = random.choice(L_3)
+    except:
+        J2 =  {'item': {'type': 'uri', 'value': 'http://www.wikidata.org/entity/Q142794'},
+          'itemLabel': {'xml:lang': 'en',
+           'type': 'literal',
+           'value': "Neymar"}}
     
     
     
