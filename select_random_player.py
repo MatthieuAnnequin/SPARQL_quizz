@@ -34,7 +34,8 @@ def get_results(endpoint_url, query):
 def create_player_query(club):
   start_query = '''SELECT DISTINCT ?item ?itemLabel ?team ?pays_de_nationalité_sportive ?pays_de_nationalité_sportiveLabel ?date_de_naissance ?pays_de_citoyenneté ?pays_de_citoyennetéLabel WHERE{
     ?item wdt:P106 wd:Q937857.
-    ?item wdt:P569 ?date FILTER (?date > "1995-01-01T00:00:00Z"^^xsd:dateTime) .
+    ?item wdt:P21 wd:Q6581097 .
+    ?item wdt:P569 ?date FILTER (?date > "1990-01-01T00:00:00Z"^^xsd:dateTime) .
     ?item wdt:P54 ?team.'''
   filter =  '''FILTER (?team = wd:{0})
   '''
@@ -43,7 +44,7 @@ def create_player_query(club):
   OPTIONAL { ?item wdt:P569 ?date_de_naissance. }
   OPTIONAL { ?item wdt:P27 ?pays_de_citoyenneté. }
   }
-  LIMIT 30'''
+  LIMIT 100'''
   query_player = start_query + filter.format(club) + end_query
   return query_player
 
@@ -60,27 +61,31 @@ def get_player_id():
   result_team_query = get_results(endpoint_url, query_team)
 
   clubs_id = list_q(result_team_query)
-
-  random_club = random.choice(clubs_id)
-  random_club_name = random_club[0]
-  random_club_id = random_club[1]
-  query_player = create_player_query(random_club_id)
-  result_query_player = get_results(endpoint_url, query_player)
-  
   list_players = list()
-  for result in result_query_player["results"]["bindings"]:
-       list_players.append(result)
-  
-  random_player = random.choice(list_players)
-  random_player_id = random_player['item']['value'].split("/")[-1]
-  random_player_name = random_player['itemLabel']['value']
-  random_player_birth = random_player['date_de_naissance']['value']
-  try:
-    random_player_country = random_player['pays_de_nationalité_sportiveLabel']['value']
-    random_player_country_id = random_player['pays_de_nationalité_sportive']['value'].split("/")[-1]
-  except:
-    random_player_country = random_player['pays_de_citoyennetéLabel']['value']
-    random_player_country_id = random_player['pays_de_citoyenneté']['value'].split("/")[-1]
+
+  while len(list_players)<1:
+    random_club = random.choice(clubs_id)
+    random_club_name = random_club[0]
+    random_club_id = random_club[1]
+    query_player = create_player_query(random_club_id)
+    result_query_player = get_results(endpoint_url, query_player)
+    
+    for result in result_query_player["results"]["bindings"]:
+        list_players.append(result)
+    if len(list_players)>1:
+      random_player = random.choice(list_players)
+      random_player_id = random_player['item']['value'].split("/")[-1]
+      random_player_name = random_player['itemLabel']['value']
+      random_player_birth = random_player['date_de_naissance']['value']
+      try:
+        random_player_country = random_player['pays_de_nationalité_sportiveLabel']['value']
+        random_player_country_id = random_player['pays_de_nationalité_sportive']['value'].split("/")[-1]
+      except:
+        try:
+          random_player_country = random_player['pays_de_citoyennetéLabel']['value']
+          random_player_country_id = random_player['pays_de_citoyenneté']['value'].split("/")[-1]
+        except:
+          list_players = list()
   return random_player_id, random_player_name, random_player_birth, random_player_country, random_player_country_id, random_club_id, random_club_name
 
 
